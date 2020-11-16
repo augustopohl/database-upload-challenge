@@ -6,7 +6,6 @@ import Transaction from '../models/Transaction';
 import Category from '../models/Category';
 
 import TransactionsRepository from '../repositories/TransactionsRepository';
-import { Title } from '@material-ui/icons';
 
 interface CSVTransaction {
   title: string;

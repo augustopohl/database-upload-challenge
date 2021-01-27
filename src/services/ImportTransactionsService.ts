@@ -1,4 +1,4 @@
-import {  getCustomRepository, getRepository, In } from 'typeorm';
+import { getCustomRepository, getRepository, In } from 'typeorm';
 import csvParse from 'csv-parse';
 import fs from 'fs';
 
@@ -48,16 +48,16 @@ class ImportTransactionsService {
     const existentCategories = await categoriesRepository.find({
       where: {
         title: In(categories),
-      }
+      },
     });
 
     const existentCategoriesTitles = existentCategories.map(
       (category: Category) => category.title
     );
 
-    const addCategoryTitles = categories.
-    filter(category => !existentCategoriesTitles.includes(category)
-    ).filter((value, index, self) => self.indexOf(value) == index);
+    const addCategoryTitles = categories
+      .filter(category => !existentCategoriesTitles.includes(category))
+      .filter((value, index, self) => self.indexOf(value) === index);
 
     const newCategories = categoriesRepository.create(
       addCategoryTitles.map(title => ({
@@ -67,15 +67,15 @@ class ImportTransactionsService {
 
     await categoriesRepository.save(newCategories);
 
-    const finalCategories = [ ... newCategories, ... existentCategories ];
+    const finalCategories = [...newCategories, ...existentCategories];
 
     const createdTransactions = transactionRepository.create(
-      transactions.map( transaction => ({
+      transactions.map(transaction => ({
         title: transaction.title,
         type: transaction.type,
         value: transaction.value,
         category: finalCategories.find(
-          category => category.title == transaction.category,
+          category => category.title === transaction.category,
         ),
       })),
     );
